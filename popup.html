@@ -1,0 +1,65 @@
+<html>
+<head>
+	<title>Keyword Options</title>
+	<script type="text/javascript" src="options.js"></script>
+
+</head>
+<body onload="fetchKeywordList()" background="images/nospoiler.png">
+	
+<!-- <form action="demo_form.asp"> -->
+  
+<script>
+var keywordlist =  chrome.storage.sync.get("keywords");
+//var myMap = new Map();
+if(keywordlist == null)
+	{
+		keywordlist = new Set();
+	}
+function getKeywordList()
+{
+	console.log("ND");
+	return keywordlist;
+}
+function updateKeywordList(text)
+{
+
+	console.log("Hello"+text);
+
+	var arr = text.match(/\S+/g);
+
+	for(var i=0;i<arr.length;i++)
+	{
+		keywordlist.add(arr[i].toLowerCase());
+    	
+	}
+	chrome.storage.sync.set("keywords",keywordlist);
+
+
+}
+
+	function fetchKeywordList()
+	{
+		var keywordList = getKeywordList();
+		var list="";
+		for(var i=0;i<keywordList.length;i++)
+		{
+			list+=keywordList[i]+",";
+    	
+		}
+		document.getElementById('keywords').text = list;
+		console.log(list);
+
+	}
+	//fetchkeywordlist();
+
+
+</script>
+
+Keywords : <input type="text" id="keywords"><br>
+  <input type="submit" value="Submit" onclick="updateKeywordList(\"\")" >
+<!-- </form> -->
+Enter the keywords separated by a COMMA (Eg. Stark,Game,Thrones)
+
+
+</body>
+</html>
